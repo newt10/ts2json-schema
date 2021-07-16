@@ -9,7 +9,7 @@ import { Logger, LogLevel } from './logger';
 // Output path where files should be placed.
 const commandManager = new Command()
   .requiredOption('-p, --path <directory>', 'Source files')
-  .option('-m, --match <regex pattern>', 'Build schema for types that match the pattern')
+  .requiredOption('-m, --match <regex pattern>', 'Build schema for types that match the pattern')
   .option('-o, --out <directory>', 'Set the output dir (default: <source path>/../schema)')
   .option('--debug', 'Enable debug logging')
   .option('-v, --verbose', 'Enable verbose output');
@@ -87,13 +87,9 @@ const generateSchemas = () => {
   }
   // get all symbols which meet regex
   const matchPattern = commandManager.opts().match;
-  if (matchPattern) {
-    logger.debug(`Using '${matchPattern}' to filter types.`);
-  }
+  logger.debug(`Using '${matchPattern}' to filter types.`);
   const symbols = generator.getUserSymbols();
-  const filtered = matchPattern
-    ? symbols.filter(symbol => !!symbol.match(new RegExp(matchPattern)))
-    : symbols;
+  const filtered = symbols.filter(symbol => !!symbol.match(new RegExp(matchPattern)));
 
   logger.verbose(`Filtered ${symbols.length} symbols using '${matchPattern}' to obtain:\n`, filtered);
   // create directory if it doesn't exist
