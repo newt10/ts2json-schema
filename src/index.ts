@@ -1,4 +1,4 @@
-import path, { extname } from 'path';
+import path from 'path';
 import { writeFile, existsSync, readdirSync, mkdirSync, lstatSync } from 'fs';
 import * as TJS from 'typescript-json-schema';
 import { Command } from 'commander';
