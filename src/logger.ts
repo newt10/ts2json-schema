@@ -11,10 +11,10 @@ export class Logger {
   public readonly logLevel: LogLevel;
 
   private _log: (message?: string, ...optionalParams: unknown[]) => void;
-  private static errorPrefix = '\x1b[31m[ERR]\x1b[0m ';
+  private static errorPrefix = '\x1b[31m[ERROR]\x1b[0m ';
   private static warnPrefix = '\x1b[33m[WARN]\x1b[0m ';
   private static infoPrefix = '\x1b[32m[INFO]\x1b[0m ';
-  private static debugPrefix = '\x1b[37m[DBG]\x1b[0m ';
+  private static debugPrefix = '\x1b[37m[DEBUG]\x1b[0m ';
 
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
