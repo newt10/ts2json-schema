@@ -1,16 +1,16 @@
 {
   "private": true,
-  "displayName": "Typescript Validtion Script",
-  "name": "typescript-validation-script",
+  "displayName": "Typescript JSON Schema Generator",
+  "name": "ts2json-schema",
   "version": "1.0.0",
-  "description": "Easily build schemas from your typescript folder.",
+  "description": "Build JSON schemas for your typescript types matching a pattern.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:newt10/homebridge-broadlink-rm-enhanced.git"
+    "url": "git@github.com:newt10/ts2json-schema.git"
   },
   "bugs": {
-    "url": "https://github.com/newt10/homebridge-broadlink-rm-enhanced/issues"
+    "url": "https://github.com/newt10/ts2json-schema/issues"
   },
   "engines": {
     "node": ">=10.17.0"
@@ -20,17 +20,15 @@
     "ts2json-schema": "./dist/index.js"
   },
   "scripts": {
-    "generate": "ts2json-schema -p ./src/models --debug",
-    "test": "node ./dist/index.js -v -p ./src/models --debug -m .+Interface$",
-    "vega": "node ./dist/vega.js",
-    "cli": "./node_modules/.bin/ts-json-schema-generator --path './src/models/*.ts' -o './dist/schema/'",
-    "cli2": "./node_modules/.bin/typescript-json-schema ./src/models/*.ts *",
-    "start": "node ./dist/index.js",
     "lint": "eslint src/**.ts --max-warnings=0",
     "build": "rimraf ./dist && tsc",
     "prepublishOnly": "npm run lint && npm run build"
   },
   "keywords": [
+    "typescript to json schema",
+    "json schema",
+    "JSONSchema",
+    "pattern match"
   ],
   "author": {
     "name": "newt10"
@@ -45,8 +43,6 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
-    "typescript-json-schema": "^0.38.3",
-    "ajv": "^6.12.6",
-    "typescript-json-validator": "^2.4.2"
+    "typescript-json-schema": "^0.38.3"
   }
 }
