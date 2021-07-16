@@ -1,9 +1,9 @@
 import path from 'path';
-import { writeFile, existsSync, readdirSync, mkdirSync, writeFileSync, lstatSync } from 'fs';
-import stringify from 'json-stable-stringify';
+import { writeFile, existsSync, readdirSync, mkdirSync, lstatSync } from 'fs';
 import * as TJS from 'typescript-json-schema';
 import { Command } from 'commander';
 
+import { Logger, LogLevel } from './logger';
 // What is needed
 // Location of the files which need to be processed.
 // Output path where files should be placed.
@@ -15,6 +15,7 @@ const commandManager = new Command()
 
 const rootPath = path.resolve(__dirname, '../'); // this will run from the util folder, rootPath is 1 level out.
 let inputPath, outputPath: string;
+let logger: Logger;
 
 const configure = () => {
   commandManager.parse(process.argv);
@@ -31,6 +32,9 @@ const configure = () => {
     configError.name = 'ConfigError';
     throw configError;
   }
+
+  const level = commandManager.opts().debug ? LogLevel.DEBUG : LogLevel.INFO;
+  logger = new Logger(level, console.log);
 };
 
 const buildFileList = () => {
@@ -44,15 +48,15 @@ const buildFileList = () => {
 
 const generateSchemas = () => {
   configure();
-  console.log(`Configured to process files from: '${inputPath}'`
+  logger.info(`Configured to process files from: '${inputPath}'`
     + ` and writing schemas to: '${outputPath}'`);
 
   const files = buildFileList();
   if (!files || files.length < 1) {
-    console.log('Found no matching files to process.');
+    logger.info('Found no matching files to process.');
     return;
   }
-  console.log('Processing files:\n', files);
+  logger.debug('Processing files:\n', files);
 
   const settings = {
     required: true,
@@ -68,7 +72,7 @@ const generateSchemas = () => {
   ) as TJS.JsonSchemaGenerator;
 
   if (!generator) {
-    console.error('Cound not build a generator. Please report issue.');
+    logger.error('Cound not build a generator. Please report issue.');
     return;
   }
   // get all symbols which meet regex
@@ -78,9 +82,7 @@ const generateSchemas = () => {
     ? symbols.filter(symbol => symbol.match(matchPattern))
     : symbols;
 
-  if (commandManager.opts().debug) {
-    console.debug('Generating schema for following types:\n', symbols);
-  }
+  logger.debug('Generating schema for following types:\n', symbols);
   // create directory if it doesn't exist
   if (!existsSync(outputPath)) {
     mkdirSync(outputPath);
