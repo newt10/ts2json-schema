@@ -158,6 +158,11 @@ const generateSchemas = (): void => {
         logger.info('Continue processing other types');
         return;
       }
+      if (error instanceof JSONBuilderError){
+        logger.error(`Failed to build JSON from schema for '${symbol}' with error:\n`, error);
+        logger.info('Continue processing other types');
+        return;
+      }
     }
   });
 };
