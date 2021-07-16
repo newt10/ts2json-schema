@@ -139,7 +139,8 @@ const generateSchemas = (): void => {
   logger.debug(`Using '${matchPattern}' to filter types.`);
   logger.debug('Fetching user types from files.');
   const symbols = generator.getUserSymbols();
-  const filtered = symbols.filter(symbol => !!symbol.match(new RegExp(matchPattern)));
+  const typeMatchPattern = new RegExp(matchPattern);
+  const filtered = symbols.filter(symbol => typeMatchPattern.test(symbol));
 
   logger.verbose(`Filtered ${symbols.length} symbols using '${matchPattern}' to obtain:\n`, filtered);
   // create directory if it doesn't exist
