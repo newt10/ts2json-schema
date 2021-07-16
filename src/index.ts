@@ -34,7 +34,15 @@ const configure = () => {
     throw configError;
   }
 
-  const level = commandManager.opts().debug ? LogLevel.DEBUG : LogLevel.INFO;
+  let level: LogLevel;
+  const { debug, verbose } = commandManager.opts();
+  if (debug) {
+    level = LogLevel.DEBUG;
+  } else if (verbose) {
+    level = LogLevel.VERBOSE;
+  } else {
+    level = LogLevel.INFO;
+  }
   logger = new Logger(level, console.log);
 };
 
