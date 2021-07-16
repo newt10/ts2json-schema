@@ -15,7 +15,7 @@ const commandManager = new Command()
   .option('-v, --verbose', 'Enable verbose output');
 
 const rootPath = path.resolve(__dirname, '../'); // this will run from the util folder, rootPath is 1 level out.
-let inputPath, outputPath: string;
+let inputPath: string, outputPath: string;
 let logger: Logger;
 
 const configure = () => {
