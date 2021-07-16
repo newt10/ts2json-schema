@@ -44,6 +44,7 @@ const configure = () => {
   } else {
     level = LogLevel.INFO;
   }
+  // eslint-disable-next-line no-console
   logger = new Logger(level, console.log);
 };
 
