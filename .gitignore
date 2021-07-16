@@ -1,6 +1,3 @@
-# Ignore local copy of libbroadlink (used for development)
-src/lib-br
-
 # Ignore compiled code
 dist
 
