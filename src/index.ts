@@ -11,7 +11,8 @@ const commandManager = new Command()
   .requiredOption('-p, --path <directory>', 'Source files')
   .option('-m, --match <regex pattern>', 'Build schema for types that match the pattern')
   .option('-o, --out <directory>', 'Set the output dir (default: <source path>/../schema)')
-  .option('--debug', 'Enable debug logging');
+  .option('--debug', 'Enable debug logging')
+  .option('-v, --verbose', 'Enable verbose output');
 
 const rootPath = path.resolve(__dirname, '../'); // this will run from the util folder, rootPath is 1 level out.
 let inputPath, outputPath: string;
@@ -56,7 +57,7 @@ const generateSchemas = () => {
     logger.info('Found no matching files to process.');
     return;
   }
-  logger.debug('Processing files:\n', files);
+  logger.verbose('Processing files:\n', files);
 
   const settings = {
     required: true,
@@ -72,7 +73,7 @@ const generateSchemas = () => {
   ) as TJS.JsonSchemaGenerator;
 
   if (!generator) {
-    logger.error('Cound not build a generator. Please report issue.');
+    logger.error('Failed to build a schema generator. Please report issue.');
     return;
   }
   // get all symbols which meet regex
@@ -82,17 +83,16 @@ const generateSchemas = () => {
     ? symbols.filter(symbol => symbol.match(matchPattern))
     : symbols;
 
-  logger.debug('Generating schema for following types:\n', symbols);
   // create directory if it doesn't exist
   if (!existsSync(outputPath)) {
     mkdirSync(outputPath);
   }
   // store all schema files
   filtered.forEach(symbol => {
+    logger.verbose(`Generating schema for '${symbol}'`);
     const schema = generator.getSchemaForSymbol(symbol);
     const prefix = 'export default ';
     const filePath = path.join(outputPath, `${symbol}JSC.ts`);
-    // const fileContents = `${prefix}${JSON.stringify(schema, null, 2)}`;
     const fileContents = `${prefix}${JSON.stringify(schema, null, 2)}`;
     writeFile(filePath, fileContents, (err) => {
       if (err) {

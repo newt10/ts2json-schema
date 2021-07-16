@@ -2,8 +2,9 @@ export const enum LogLevel {
   ERROR,
   WARN,
   INFO,
+  VERBOSE,
   DEBUG,
-  VERBOSE
+
 }
 
 export class Logger {
@@ -14,7 +15,6 @@ export class Logger {
   private static warnPrefix = '\x1b[33m[WARN]\x1b[0m ';
   private static infoPrefix = '\x1b[32m[INFO]\x1b[0m ';
   private static debugPrefix = '\x1b[37m[DBG]\x1b[0m ';
-  private static verbosePrefix = '\x1b[37m[VRBS]\x1b[0m ';
 
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -52,7 +52,7 @@ export class Logger {
     }
     switch (level) {
       case LogLevel.VERBOSE:
-        this._log(Logger.verbosePrefix + message, ...optionalParams);
+        this._log(Logger.infoPrefix + message, ...optionalParams);
         break;
       case LogLevel.DEBUG:
         this._log(Logger.debugPrefix + message, ...optionalParams!);
