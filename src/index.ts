@@ -19,6 +19,9 @@ const rootPath = path.resolve(__dirname, '../'); // this will run from the util 
 let inputPath: string, outputPath: string;
 let logger: Logger;
 
+/**
+ * Configure various settings based on supplied arguments.
+ */
 const configure = () => {
   commandManager.parse(process.argv);
   inputPath = path.resolve(rootPath, commandManager.opts().path);
@@ -48,7 +51,11 @@ const configure = () => {
   logger = new Logger(level, console.log);
 };
 
-const buildFileList = () => {
+/**
+ * Retrieve typescript files from the source directory.
+ * @returns {Array<string>} list of file paths to process
+ */
+const buildFileList = (): string[] => {
   // get list of files at inputPath
   const allFiles = readdirSync(inputPath);
   // filter to typescript files
@@ -88,7 +95,13 @@ const saveSchemaForSymbol = (symbol: string, generator: TJS.JsonSchemaGenerator)
 
 };
 
-const generateSchemas = () => {
+/**
+ * Generate JSON schema from typescript files at the source directory and save
+ * it at output directory.
+ * Generated files have have the following pattern - <type name>JSC.ts
+ * @returns {void}
+ */
+const generateSchemas = (): void => {
   configure();
   logger.info(`Configured to process files from: '${inputPath}'`
     + ` and writing schemas to: '${outputPath}'`);
