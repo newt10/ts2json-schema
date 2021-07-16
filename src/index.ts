@@ -1,9 +1,10 @@
-import path from 'path';
+import path, { extname } from 'path';
 import { writeFile, existsSync, readdirSync, mkdirSync, lstatSync } from 'fs';
 import * as TJS from 'typescript-json-schema';
 import { Command } from 'commander';
 
 import { Logger, LogLevel } from './logger';
+import { FileWriteError, GeneratorError, JSONBuilderError } from './errors';
 // What is needed
 // Location of the files which need to be processed.
 // Output path where files should be placed.
@@ -55,6 +56,37 @@ const buildFileList = () => {
   return files.map(file => path.resolve(inputPath, file));
 };
 
+/**
+ * Generate JSON schema using the supplied generator for the given type. Function
+ * throw errors when they are encountered so handling them will allow the caller
+ * to gracefully perform multiple conversions.
+ * @param symbol {string} name of the type.
+ * @param generator {TJS.JsonSchemaGenerator} instance of configured schema generator.
+ */
+const saveSchemaForSymbol = (symbol: string, generator: TJS.JsonSchemaGenerator): void => {
+  let schema: TJS.Definition;
+  try {
+    logger.verbose(`Generating schema for '${symbol}'`);
+    schema = generator.getSchemaForSymbol(symbol);
+  } catch (error) {
+    throw new GeneratorError(error);
+  }
+  const prefix = 'export default ';
+  const filePath = path.join(outputPath, `${symbol}JSC.ts`);
+  let fileContents: string;
+  try {
+    fileContents = `${prefix}${JSON.stringify(schema, null, 2)}`;
+  } catch (error) {
+    throw new JSONBuilderError(error);
+  }
+  writeFile(filePath, fileContents, (err) => {
+    if (err) {
+      throw new FileWriteError(err.message);
+    }
+  });
+
+};
+
 const generateSchemas = () => {
   configure();
   logger.info(`Configured to process files from: '${inputPath}'`
@@ -88,6 +120,7 @@ const generateSchemas = () => {
   // get all symbols which meet regex
   const matchPattern = commandManager.opts().match;
   logger.debug(`Using '${matchPattern}' to filter types.`);
+  logger.debug('Fetching user types from files.');
   const symbols = generator.getUserSymbols();
   const filtered = symbols.filter(symbol => !!symbol.match(new RegExp(matchPattern)));
 
@@ -98,17 +131,22 @@ const generateSchemas = () => {
   }
   // store all schema files
   filtered.forEach(symbol => {
-    logger.verbose(`Generating schema for '${symbol}'`);
-    const schema = generator.getSchemaForSymbol(symbol);
-    const prefix = 'export default ';
-    const filePath = path.join(outputPath, `${symbol}JSC.ts`);
-    const fileContents = `${prefix}${JSON.stringify(schema, null, 2)}`;
-    writeFile(filePath, fileContents, (err) => {
-      if (err) {
-        throw err;
+    try {
+      saveSchemaForSymbol(symbol, generator);
+    } catch (error) {
+      if (error instanceof GeneratorError) {
+        logger.error(`Failed to generate schema for '${symbol}' with error:\n`, error);
+        logger.info('Continue processing other types');
+        return;
       }
-    });
+      if (error instanceof FileWriteError){
+        logger.error(`Failed to write file for '${symbol}' with error:\n`, error);
+        logger.info('Continue processing other types');
+        return;
+      }
+    }
   });
 };
 
+// Entry point function
 generateSchemas();
