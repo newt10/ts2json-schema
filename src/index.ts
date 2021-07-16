@@ -1,5 +1,5 @@
 import path from 'path';
-import { writeFile, existsSync, readdirSync, mkdirSync, lstatSync } from 'fs';
+import { existsSync, readdirSync, mkdirSync, lstatSync, writeFileSync } from 'fs';
 import * as TJS from 'typescript-json-schema';
 import { Command } from 'commander';
 
@@ -87,12 +87,13 @@ const saveSchemaForSymbol = (symbol: string, generator: TJS.JsonSchemaGenerator)
   } catch (error) {
     throw new JSONBuilderError(error);
   }
-  writeFile(filePath, fileContents, (err) => {
-    if (err) {
-      throw new FileWriteError(err.message);
+  try {
+    writeFileSync(filePath, fileContents);
+  } catch(error) {
+    if (error) {
+      throw new FileWriteError(error);
     }
-  });
-
+  }
 };
 
 /**
