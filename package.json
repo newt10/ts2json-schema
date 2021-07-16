@@ -21,7 +21,7 @@
   },
   "scripts": {
     "generate": "ts2json-schema -p ./src/models --debug",
-    "test": "ts2json-schema -p ./src/models --debug",
+    "test": "node ./dist/index.js -v -p ./src/models --debug -m .+Interface$",
     "vega": "node ./dist/vega.js",
     "cli": "./node_modules/.bin/ts-json-schema-generator --path './src/models/*.ts' -o './dist/schema/'",
     "cli2": "./node_modules/.bin/typescript-json-schema ./src/models/*.ts *",
