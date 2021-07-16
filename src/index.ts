@@ -74,6 +74,7 @@ const generateSchemas = () => {
     strictNullChecks: true,
   } as TJS.CompilerOptions;
 
+  logger.debug('Configuring schema generator');
   const program = TJS.getProgramFromFiles(files, compilerOptions);
   const generator = TJS.buildGenerator(
     program,
@@ -86,11 +87,15 @@ const generateSchemas = () => {
   }
   // get all symbols which meet regex
   const matchPattern = commandManager.opts().match;
+  if (matchPattern) {
+    logger.debug(`Using '${matchPattern}' to filter types.`);
+  }
   const symbols = generator.getUserSymbols();
   const filtered = matchPattern
-    ? symbols.filter(symbol => symbol.match(matchPattern))
+    ? symbols.filter(symbol => !!symbol.match(new RegExp(matchPattern)))
     : symbols;
 
+  logger.verbose(`Filtered ${symbols.length} symbols using '${matchPattern}' to obtain:\n`, filtered);
   // create directory if it doesn't exist
   if (!existsSync(outputPath)) {
     mkdirSync(outputPath);
