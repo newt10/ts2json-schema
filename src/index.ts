@@ -59,9 +59,11 @@ const buildFileList = (): string[] => {
   // get list of files at inputPath
   const allFiles = readdirSync(inputPath);
   // filter to typescript files
-  const files = allFiles.filter(file => file.match(/.+\.ts$/g));
+  const tsRegex = new RegExp('.+\\.ts$');
+  const files = allFiles.filter(file => tsRegex.test(file));
   // convert typescript filename to absolute file path
-  return files.map(file => path.resolve(inputPath, file));
+  const filePaths = files.map(file => path.resolve(inputPath, file));
+  return filePaths.filter(filePath => !lstatSync(filePath).isDirectory());
 };
 
 /**
