@@ -1,6 +1,9 @@
 # Ignore compiled code
 dist
 
+#Ignore demo code
+schema
+
 # ------------- Defaults ------------- #
 
 # Logs
