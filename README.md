@@ -16,11 +16,12 @@ The utility only supports CLI usage.
 Usage: ts2json-schema -p <source/directory/of/types> -m <pattern to match against types>
 
 Options:
-  --path, -p            Path to source directory where you have types.               [string]  [default: []]
-  --match, -m           Regex pattern to filter types.                               [string]  [default: []]
+  --path, -p            Path to source directory where you have types.               [string]
+  --match, -m           Regex pattern to filter types.                               [string]
   --out, -o             Path where you want utility to create schema files.          [string]  [default: "<source path>/../schema"]
   --verbose, -v         Enable verbose output for logging.                           [boolean] [default: false]
   --debug               Enable debug output.                                         [boolean] [default: false]
+  --filematch, -f       Regex pattern to filter files.                               [string]  [default: ".*"]
 ```
 
 

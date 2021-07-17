@@ -13,7 +13,8 @@ const commandManager = new Command()
   .requiredOption('-m, --match <regex pattern>', 'Build schema for types that match the pattern')
   .option('-o, --out <directory>', 'Set the output dir (default: <source path>/../schema)')
   .option('--debug', 'Enable debug logging')
-  .option('-v, --verbose', 'Enable verbose output');
+  .option('-v, --verbose', 'Enable verbose output')
+  .option('-f, --filematch <regex pattern>', 'Use file names that match the pattern');
 
 const rootPath = path.resolve(__dirname, '../'); // this will run from the util folder, rootPath is 1 level out.
 let inputPath: string, outputPath: string;
@@ -56,11 +57,18 @@ const configure = () => {
  * @returns {Array<string>} list of file paths to process
  */
 const buildFileList = (): string[] => {
+  let filematch = commandManager.opts().filematch;
+  if (filematch) {
+    logger.info(`Looking for files matching pattern '${filematch}'`);
+  } else {
+    filematch = '.*';
+  }
   // get list of files at inputPath
   const allFiles = readdirSync(inputPath);
   // filter to typescript files
   const tsRegex = new RegExp('.+\\.ts$');
-  const files = allFiles.filter(file => tsRegex.test(file));
+  const fileMatchRegex = new RegExp(filematch);
+  const files = allFiles.filter(file => tsRegex.test(file) && fileMatchRegex.test(file));
   // convert typescript filename to absolute file path
   const filePaths = files.map(file => path.resolve(inputPath, file));
   return filePaths.filter(filePath => !lstatSync(filePath).isDirectory());
