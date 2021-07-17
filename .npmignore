@@ -1,6 +1,9 @@
 # Ignore source code
 src
 
+#Ignore demo code
+schema
+
 # ------------- Defaults ------------- #
 
 # gitHub actions
