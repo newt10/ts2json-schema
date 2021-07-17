@@ -1,5 +1,4 @@
 {
-  "private": true,
   "displayName": "Typescript JSON Schema Generator",
   "name": "ts2json-schema",
   "version": "1.0.0",
