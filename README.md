@@ -20,7 +20,7 @@ Options:
   --match, -m           Regex pattern to filter types.                               [string]
   --out, -o             Path where you want utility to create schema files.          [string]  [default: "<source path>/../schema"]
   --verbose, -v         Enable verbose output for logging.                           [boolean] [default: false]
-  --debug               Enable debug output.                                         [boolean] [default: false]
+  --debug, -D           Enable debug output.                                         [boolean] [default: false]
   --filematch, -f       Regex pattern to filter files.                               [string]  [default: ".*"]
 ```
 

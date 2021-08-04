@@ -12,7 +12,7 @@ const commandManager = new Command()
   .requiredOption('-p, --path <directory>', 'Source files')
   .requiredOption('-m, --match <regex pattern>', 'Build schema for types that match the pattern')
   .option('-o, --out <directory>', 'Set the output dir (default: <source path>/../schema)')
-  .option('--debug', 'Enable debug logging')
+  .option('-D, --debug', 'Enable debug logging')
   .option('-v, --verbose', 'Enable verbose output')
   .option('-f, --filematch <regex pattern>', 'Use file names that match the pattern');
 
