@@ -21,7 +21,8 @@ const commandManager = new Command()
   .option('-f, --filematch <regex pattern>', 'Use file names that match the pattern')
   .option('-A, --vega', 'Use vega/ts-json-schema-generator')
   .option('-t, --tsconfig <path>', 'Provide path to tsconfig including filename')
-  .option('-R, --root <path>', 'Provide a root path to override the auto configuration');
+  .option('-R, --root <path>', 'Provide a root path to override the auto configuration')
+  .option('-e, --exclude <pattern>', 'Exclude types that match the pattern');
 
 let rootPath: string, inputPath: string, outputPath: string, tsPath: string;
 let logger: Logger;
@@ -189,7 +190,11 @@ const generateSchemas = (): void => {
   logger.debug('Fetching user types from files.');
   const symbols = generator.getUserSymbols();
   const typeMatchPattern = new RegExp(matchPattern);
-  const filtered = symbols.filter(symbol => typeMatchPattern.test(symbol));
+  let filtered = symbols.filter(symbol => typeMatchPattern.test(symbol));
+  if (commandManager.opts().exclude) {
+    const excludePattern = new RegExp(commandManager.opts().exclude);
+    filtered = filtered.filter(symbol => !excludePattern.test(symbol));
+  }
 
   logger.verbose(`Filtered ${symbols.length} symbols using '${matchPattern}' to obtain:\n`, filtered);
   // create directory if it doesn't exist

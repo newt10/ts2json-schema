@@ -29,7 +29,8 @@ Options:
   --filematch, -f       Regex pattern to filter files.                               [string]  [default: ".*"]
   --vega, -A            Use vega/ts-json-schema-generator.                           [boolean] [default: false]
   --tsconfig, -t        Provide path to tsconfig including filename.                 [string]
-  --root, -R            rovide a root path to override the auto configuration.       [string]
+  --root, -R            Root path to source files.                                   [string]
+  --exclude, -e         Exclude types matching pattern                               [string]
 ```
 
 
