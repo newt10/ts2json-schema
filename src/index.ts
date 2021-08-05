@@ -208,6 +208,7 @@ const generateSchemas = (): void => {
       type: '*',
       topRef: true,
       skipTypeCheck: true,
+      additionalProperties: true,
     };
     logger.verbose('Configured vega generator with following settings', vegaConfig);
     vegaGenerator = VegaTSJ.createGenerator(vegaConfig);
