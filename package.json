@@ -19,7 +19,8 @@
     "ts2json-schema": "./bin/ts2json-schema.bin.js"
   },
   "scripts": {
-    "demo": "rimraf ./schema && node ./dist/index.js -v -p ./models --debug -m .+Interface$",
+    "demo": "rimraf ./schema && node ./dist/index.js -Dv -p ./src/models -m .+Interface$",
+    "demo-vega": "rimraf ./schema && node ./dist/index.js -ADv -p ./src/models -m .+Interface$ -t ./tsconfig.json",
     "lint": "eslint src/**.ts --max-warnings=0",
     "build": "rimraf ./dist && tsc",
     "prepublishOnly": "npm run lint && npm run build"
@@ -43,7 +44,9 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "commander": "^8.0.0",
+    "ts-json-schema-generator": "^0.95.0",
     "typescript-json-schema": "^0.50.1"
   }
 }

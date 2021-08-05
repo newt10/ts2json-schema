@@ -3,6 +3,12 @@ Simple utility that helps you generate schemas for typescript types. You can use
 build schema from all files in a directory and also provide options to limit to a fixed pattern
 of types.
 
+## Why use this?
+This utility allows you to create schemas using either [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) or [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator).
+It enhances the functionality of [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator) by allowing you to create individual schema files
+for specific types. Additionaly the utility also support pattern matching for filenames and typenames that give you a lot of control in
+automatically generating schemas in your workflow.
+
 ## Installation
 Global: `npm install -g ts2json-schema`
 Local: `npm install ts2json-schema`
@@ -22,6 +28,9 @@ Options:
   --verbose, -v         Enable verbose output for logging.                           [boolean] [default: false]
   --debug, -D           Enable debug output.                                         [boolean] [default: false]
   --filematch, -f       Regex pattern to filter files.                               [string]  [default: ".*"]
+  --vega, -A            Use vega/ts-json-schema-generator.                           [boolean] [default: false]
+  --tsconfig, -t        Provide path to tsconfig including filename.                 [string]
+  --root, -R            rovide a root path to override the auto configuration.       [string]
 ```
 
 
@@ -56,9 +65,9 @@ For e.g. if I want to create schemas for all types in the source files that end 
 
 
 # Limitations
-- This utility  uses [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) to generate schemas so please follow the 
+- This utility  uses [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) or [vega/ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator) to generate schemas. If using the default generator please follow the 
 type definition in the [api-docs](https://github.com/YousefED/typescript-json-schema/blob/master/api.md) to get the best of this. This also
-means that all the bugs and limitations of *typescript-json-schema* also apply to this project.
+means that all the bugs and limitations of *typescript-json-schema* and *vega/ts-json-schema-generator* also apply to this project.
 
 - This utility only read files at the top level in the source directory. If you are interested in recursive behavior then feel free to
 file a enhancement request and/or add a PR.
