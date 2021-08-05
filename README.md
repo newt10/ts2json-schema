@@ -6,8 +6,7 @@ of types.
 ## Why use this?
 This utility allows you to create schemas using either [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) or [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator).
 It enhances the functionality of [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator) by allowing you to create individual schema files
-for specific types. Additionaly the utility also support pattern matching for filenames and typenames that give you a lot of control in
-automatically generating schemas in your workflow.
+for specific types. Additionaly the utility also supports pattern matching for filenames and typenames that give you a lot of control in generating schemas within your workflow.
 
 ## Installation
 Global: `npm install -g ts2json-schema`
@@ -72,6 +71,8 @@ means that all the bugs and limitations of *typescript-json-schema* and *vega/ts
 - This utility only read files at the top level in the source directory. If you are interested in recursive behavior then feel free to
 file a enhancement request and/or add a PR.
 
+## Known Limitations with [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator)
+This generator requires that the type files are within the same path as the rootDir path in the tsconfig file. You will need to accordingly organize your model/interface/type files. For e.g. if your rootDir is `./src` then your type files can be placed in any child or grand-child directory of `./src`
 
 # Background
 
