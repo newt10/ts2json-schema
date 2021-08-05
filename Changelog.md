@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0
+### Added
+- Option for excluding types with pattern matching
+
+### Fixed
+- Allow additionalProperties in schema when using [vega/ts-json-schema-generator](https://www.npmjs.com/package/ts-json-schema-generator)
+
 ## 1.3.0
 ### Added
 - Shortcut for debug using -D
